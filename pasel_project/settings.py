@@ -90,3 +90,4 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 # Authentication Redirects (Preserved Core Routing)
 LOGIN_REDIRECT_URL = 'index'
 LOGOUT_REDIRECT_URL = 'index'
+CSRF_TRUSTED_ORIGINS = ['https://www.pasel-liberia.org', 'https://pasel-liberia.org']
