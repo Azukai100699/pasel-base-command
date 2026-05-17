@@ -1,0 +1,147 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>PASEL | Mission</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root { --bg: #0a0908; --primary: #72383D; --gold: #D4AF37; --text: #EFE9E1; --subtext: #AC9C8D; }
+        body { background: var(--bg); color: var(--subtext); font-family: 'Inter', sans-serif; margin: 0; }
+
+        /* Universal Nav Styling - Unchanged */
+        nav { 
+            background: rgba(0,0,0,0.95); padding: 1rem 3rem; border-bottom: 1px solid var(--primary); 
+            display: flex; justify-content: space-between; align-items: center; 
+            position: sticky; top: 0; z-index: 1000; backdrop-filter: blur(10px);
+        }
+        .nav-logo { color: var(--gold); font-size: 0.9rem; letter-spacing: 4px; border-right: 1px solid var(--primary); padding-right: 20px; text-decoration: none; font-weight: bold; }
+        .nav-links { display: flex; gap: 30px; align-items: center; }
+        .nav-links a { color: var(--text); text-decoration: none; font-size: 0.7rem; letter-spacing: 3px; font-weight: bold; text-transform: uppercase; transition: 0.3s; }
+        .nav-links a:hover { color: var(--gold); }
+        .exit-btn { border: 1px solid var(--gold); padding: 5px 15px; background: none; color: var(--text); cursor: pointer; letter-spacing: 2px; font-size: 0.6rem; }
+
+        /* Premium Mission Header */
+        .mission-header {
+            text-align: center;
+            padding: 5rem 2rem;
+            border-bottom: 1px solid rgba(114, 56, 61, 0.4);
+            background: linear-gradient(180deg, #000 0%, var(--bg) 100%);
+        }
+        .mission-title {
+            color: var(--text);
+            font-size: 3.5rem;
+            letter-spacing: 20px;
+            margin: 0 0 15px 0;
+            font-weight: 300;
+            text-transform: uppercase;
+        }
+        .mission-subtitle {
+            color: var(--gold);
+            font-size: 0.75rem;
+            letter-spacing: 8px;
+            text-transform: uppercase;
+            opacity: 0.8;
+        }
+
+        /* Ergonomic Tactical Layout */
+        .mission-content {
+            max-width: 850px;
+            margin: 5rem auto;
+            padding: 0 2rem;
+            padding-bottom: 8rem;
+        }
+        
+        /* Tactical Statement Cards (Matches System Map Nodes for visual cohesion) */
+        .mission-block {
+            background: rgba(20, 18, 17, 0.85); 
+            border: 1px solid rgba(114, 56, 61, 0.25); 
+            padding: 2.5rem 3rem; 
+            margin-bottom: 3rem;
+            position: relative;
+            transition: all 0.4s cubic-bezier(0.25, 1, 0.5, 1);
+            border-left: 3px solid var(--primary); /* Left accent bar */
+        }
+        
+        .mission-block:hover {
+            border-color: var(--gold);
+            transform: translateY(-4px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.6);
+            background: rgba(25, 22, 21, 0.95);
+        }
+
+        .section-title {
+            color: var(--gold);
+            font-size: 0.85rem;
+            letter-spacing: 5px;
+            margin-bottom: 1.5rem;
+            text-transform: uppercase;
+            font-weight: 600;
+        }
+        
+        .mission-text {
+            font-size: 1.25rem;
+            line-height: 1.85;
+            color: var(--text);
+            font-weight: 300;
+            margin: 0;
+            letter-spacing: 0.5px;
+        }
+        
+        .highlight {
+            color: var(--gold);
+            font-weight: 400;
+            border-bottom: 1px dashed rgba(214, 175, 55, 0.3);
+            padding-bottom: 2px;
+        }
+    </style>
+</head>
+<body>
+    <nav>
+        <a href="{% url 'index' %}" class="nav-logo">PASEL // BASE COMMAND</a>
+        <div class="nav-links">
+            <a href="{% url 'index' %}">SYSTEM MAP</a>
+            <a href="{% url 'about' %}" style="color: var(--gold);">MISSION</a>
+            <a href="{% url 'directors' %}">LEADERSHIP</a>
+            {% if user.is_authenticated %}
+                <form action="{% url 'logout' %}" method="post" style="display: inline;">
+                    {% csrf_token %}
+                    <button type="submit" class="exit-btn">EXIT TERMINAL</button>
+                </form>
+            {% else %}
+                <a href="{% url 'login' %}" style="border: 1px solid var(--gold); padding: 5px 15px;">LOGIN</a>
+            {% endif %}
+        </div>
+    </nav>
+
+    <div class="mission-header">
+        <h1 class="mission-title">Mission</h1>
+        <div class="mission-subtitle">Core Initiative: Liberia National Development</div>
+    </div>
+
+    <div class="mission-content">
+        
+        <div class="mission-block">
+            <div class="section-title">Our Objective</div>
+            <p class="mission-text">
+                PASEL was founded to move beyond theoretical science and <span class="highlight">anchor innovation directly into the physical landscape</span> of Liberia's 15 counties.
+            </p>
+        </div>
+
+        <div class="mission-block">
+            <div class="section-title">Our Philosophy</div>
+            <p class="mission-text">
+                We believe in utilizing <span class="highlight">Practical and Scientific Engineering</span> to bridge the gap between advanced theoretical frameworks and actionable, ground-level infrastructure. 
+            </p>
+        </div>
+
+        <div class="mission-block">
+            <div class="section-title">Operational Methodology</div>
+            <p class="mission-text">
+                Through the deployment of Tactical Nodes across all sectors, we are establishing a decentralized network of engineering solutions. From automated rammed earth construction to sustainable mechanical systems, our focus is on <span class="highlight">resilience, efficiency, and permanent impact.</span>
+            </p>
+        </div>
+
+    </div>
+</body>
+</html>

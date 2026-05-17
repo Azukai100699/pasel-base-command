@@ -1,0 +1,1 @@
+web: gunicorn pasel_project.wsgi

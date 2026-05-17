@@ -1,0 +1,149 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>PASEL | System Map</title>
+    <title>PASEL | System Map</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root { --bg: #0a0908; --primary: #72383D; --gold: #D4AF37; --text: #EFE9E1; --subtext: #AC9C8D; }
+        body { background: var(--bg); color: var(--subtext); font-family: 'Inter', sans-serif; margin: 0; }
+        
+        /* Universal Nav Styling */
+        nav { 
+            background: rgba(0,0,0,0.95); padding: 1rem 3rem; border-bottom: 1px solid var(--primary); 
+            display: flex; justify-content: space-between; align-items: center; 
+            position: sticky; top: 0; z-index: 1000; backdrop-filter: blur(10px);
+        }
+        .nav-logo { color: var(--gold); font-size: 0.9rem; letter-spacing: 4px; border-right: 1px solid var(--primary); padding-right: 20px; text-decoration: none; font-weight: bold; }
+        .nav-links { display: flex; gap: 30px; align-items: center; }
+        .nav-links a { color: var(--text); text-decoration: none; font-size: 0.7rem; letter-spacing: 3px; font-weight: bold; text-transform: uppercase; transition: 0.3s; }
+        .nav-links a:hover { color: var(--gold); }
+        .exit-btn { border: 1px solid var(--gold); padding: 5px 15px; background: none; color: var(--text); cursor: pointer; letter-spacing: 2px; font-size: 0.6rem; }
+
+        /* Restored Premium Hero Section */
+        .hero { 
+            height: 60vh; 
+            position: relative; 
+            overflow: hidden;
+            background: #000; 
+            display: flex; 
+            justify-content: center; 
+            align-items: center; 
+            border-bottom: 2px solid var(--primary); 
+        }
+
+        /* Clean, Invisible Clickable Wrapper */
+        .logo-wrapper {
+            z-index: 20;
+            position: relative;
+            display: flex; 
+            justify-content: center;
+            align-items: center;
+            text-decoration: none;
+            outline: none;
+        }
+
+        /* THE RESTORED PREMIUM GOLD ALCHEMY */
+        .premium-logo { 
+            max-width: 350px; 
+            transition: transform 0.4s ease-in-out;
+            mix-blend-mode: screen; 
+            filter: invert(1) sepia(1) saturate(5) hue-rotate(15deg) brightness(1.2) contrast(1.2);
+        }
+        
+        .logo-wrapper:hover .premium-logo {
+            transform: scale(1.05); /* Smooth, premium zoom on hover */
+        }
+
+        /* Restored Slideshow Background */
+        .slide {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            opacity: 0;
+            transition: opacity 1.5s ease-in-out;
+            z-index: 1;
+        }
+        .slide.active { opacity: 0.35; }
+
+        /* Tactical Grid */
+        .map-container { max-width: 1200px; margin: 4rem auto; padding: 0 2rem; }
+        .sphere-label { font-size: 0.7rem; letter-spacing: 5px; color: #444; border-bottom: 1px solid #222; margin: 40px 0 20px; text-transform: uppercase; }
+        .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap: 20px; }
+        
+        .node { 
+            background: rgba(20,18,17,0.9); border: 1px solid rgba(114, 56, 61, 0.3); padding: 1.5rem; 
+            text-decoration: none; transition: 0.4s; position: relative;
+        }
+        .node:hover { border-color: var(--gold); transform: translateY(-5px); box-shadow: 0 10px 20px rgba(0,0,0,0.5); }
+        .node-id { font-family: 'Courier New'; font-size: 0.6rem; color: var(--primary); }
+        .node-name { color: var(--text); font-size: 1.2rem; text-transform: uppercase; margin: 10px 0; letter-spacing: 2px; }
+        .node-status { color: var(--gold); font-size: 0.7rem; letter-spacing: 1px; }
+        
+        .progress-bar { width: 100%; height: 2px; background: #222; margin-top: 15px; }
+        .progress-fill { height: 100%; background: var(--gold); transition: 1s; }
+    </style>
+</head>
+<body>
+    <nav>
+        <a href="{% url 'index' %}" class="nav-logo">PASEL // BASE COMMAND</a>
+        <div class="nav-links">
+            <a href="{% url 'index' %}" style="color: var(--gold);">SYSTEM MAP</a>
+            <a href="{% url 'about' %}">MISSION</a>
+            <a href="{% url 'directors' %}">LEADERSHIP</a>
+            {% if user.is_authenticated %}
+                <form action="{% url 'logout' %}" method="post" style="display: inline;">
+                    {% csrf_token %}
+                    <button type="submit" class="exit-btn">EXIT TERMINAL</button>
+                </form>
+            {% else %}
+                <a href="{% url 'login' %}" style="border: 1px solid var(--gold); padding: 5px 15px;">LOGIN</a>
+            {% endif %}
+        </div>
+    </nav>
+
+    <div class="hero">
+        {% for slide in slideshow_images %}
+            <img src="{{ slide.image.url }}" class="slide" alt="PASEL Field Operation">
+        {% endfor %}
+        
+        <a href="{% url 'index' %}" class="logo-wrapper">
+            <img src="{% static 'images/logo.png' %}" alt="PASEL Base Command" class="premium-logo">
+        </a>
+    </div>
+
+    <div class="map-container">
+        {% for sphere in spheres %}
+            <div class="sphere-label">{{ sphere.name }} SECTOR</div>
+            <div class="grid">
+                {% for hub in sphere.countyhub_set.all %}
+                <a href="{% url 'hub_detail' hub.id %}" class="node">
+                    <div class="node-id">HUB_ID: LIB-{{ hub.county_name|slice:":3"|upper }}</div>
+                    <div class="node-name">{{ hub.county_name }}</div>
+                    <div class="node-status">{{ hub.get_status_display }}</div>
+                    <div class="progress-bar"><div class="progress-fill" style="width:{{ hub.progress_percentage }}%;"></div></div>
+                </a>
+                {% endfor %}
+            </div>
+        {% endfor %}
+    </div>
+
+    <script>
+        let currentSlide = 0;
+        const slides = document.querySelectorAll('.slide');
+        if (slides.length > 0) {
+            slides[0].classList.add('active'); 
+            setInterval(() => {
+                slides[currentSlide].classList.remove('active');
+                currentSlide = (currentSlide + 1) % slides.length;
+                slides[currentSlide].classList.add('active');
+            }, 5000); 
+        }
+    </script>
+</body>
+</html>

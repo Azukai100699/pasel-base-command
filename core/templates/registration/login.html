@@ -1,0 +1,33 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>PASEL | Authorization</title>
+    <style>
+        :root { --bg: #1e1b19; --gold: #D4AF37; --primary: #72383D; --text: #EFE9E1; }
+        body { background: var(--bg); color: var(--text); font-family: 'Inter', sans-serif; display: flex; align-items: center; justify-content: center; height: 100vh; margin: 0; }
+        .login-box { width: 400px; background: #322D29; padding: 4rem; border-top: 5px solid var(--gold); box-shadow: 0 40px 80px rgba(0,0,0,0.5); }
+        h2 { letter-spacing: 5px; color: var(--gold); text-align: center; margin-bottom: 2rem; }
+        input { width: 100%; padding: 1rem; margin-bottom: 1rem; background: #1e1b19; border: 1px solid #444; color: white; box-sizing: border-box; }
+        button { width: 100%; padding: 1rem; background: var(--primary); color: white; border: none; font-weight: bold; cursor: pointer; letter-spacing: 3px; }
+        .alert { padding: 10px; background: var(--primary); color: white; margin-bottom: 20px; font-size: 0.8rem; border: 1px solid var(--gold); text-align: center; }
+    </style>
+</head>
+<body>
+    <div class="login-box">
+        <h2>AUTHORIZE</h2>
+        
+        {% if messages %}
+            {% for message in messages %}<div class="alert">{{ message }}</div>{% endfor %}
+        {% endif %}
+
+        <form method="post">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <button type="submit">ENTER TERMINAL</button>
+        </form>
+        <div style="text-align: center; margin-top: 2rem;"><a href="{% url 'register' %}" style="color: var(--gold); font-size: 0.7rem; text-decoration: none;">New personnel? Enroll here.</a></div>
+    </div>
+</body>
+</html>

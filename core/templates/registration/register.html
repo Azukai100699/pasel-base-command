@@ -1,0 +1,42 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>PASEL | System Enrollment</title>
+    <style>
+        :root { --bg: #1e1b19; --gold: #D4AF37; --primary: #72383D; --text: #EFE9E1; }
+        body { background: var(--bg); color: var(--text); font-family: 'Inter', sans-serif; display: flex; align-items: center; justify-content: center; height: 100vh; margin: 0; }
+        .reg-box { width: 450px; background: #322D29; padding: 4rem; border-top: 5px solid var(--gold); box-shadow: 0 40px 80px rgba(0,0,0,0.5); }
+        h2 { letter-spacing: 5px; color: var(--gold); text-align: center; margin-bottom: 2rem; }
+        p { font-size: 0.8rem; color: #AC9C8D; margin-bottom: 1.5rem; text-align: center; }
+        input { width: 100%; padding: 1rem; margin-bottom: 1rem; background: #1e1b19; border: 1px solid #444; color: white; box-sizing: border-box; }
+        button { width: 100%; padding: 1rem; background: var(--primary); color: white; border: none; font-weight: bold; cursor: pointer; letter-spacing: 3px; transition: 0.3s; }
+        button:hover { background: var(--gold); color: var(--bg); }
+        .errorlist { color: #ff4d4d; font-size: 0.7rem; list-style: none; padding: 0; margin-bottom: 10px; }
+        .helptext { display: block; font-size: 0.6rem; color: #888; margin-bottom: 10px; line-height: 1.4; }
+    </style>
+</head>
+<body>
+    <div class="reg-box">
+        <h2>ENROLLMENT</h2>
+        <p>Authorize your Operator ID using the Master Key.</p>
+        
+        <form method="post">
+            {% csrf_token %}
+            {% for field in form %}
+                <div style="margin-bottom: 15px;">
+                    {{ field }}
+                    {% if field.errors %}<div class="errorlist">{{ field.errors }}</div>{% endif %}
+                    {% if field.help_text %}<span class="helptext">{{ field.help_text|safe }}</span>{% endif %}
+                </div>
+            {% endfor %}
+            <button type="submit">ACTIVATE ID</button>
+        </form>
+
+        <div style="text-align: center; margin-top: 2rem;">
+            <a href="{% url 'login' %}" style="color: var(--gold); font-size: 0.7rem; text-decoration: none;">Authorized personnel only.</a>
+        </div>
+    </div>
+</body>
+</html>

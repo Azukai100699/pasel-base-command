@@ -1,0 +1,74 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>PASEL | Executive Leadership</title>
+    <style>
+        :root { --bg: #0a0908; --card-bg: rgba(21, 19, 18, 0.9); --primary: #72383D; --gold: #D4AF37; --text: #EFE9E1; --subtext: #AC9C8D; }
+        body { background: var(--bg); color: var(--subtext); font-family: 'Inter', sans-serif; margin: 0; }
+        
+        /* Universal Nav Styling */
+        nav { 
+            background: rgba(0,0,0,0.95); padding: 1rem 3rem; border-bottom: 1px solid var(--primary); 
+            display: flex; justify-content: space-between; align-items: center; 
+            position: sticky; top: 0; z-index: 1000; backdrop-filter: blur(10px);
+        }
+        .nav-logo { color: var(--gold); font-size: 0.9rem; letter-spacing: 4px; border-right: 1px solid var(--primary); padding-right: 20px; text-decoration: none; font-weight: bold; }
+        .nav-links { display: flex; gap: 30px; align-items: center; }
+        .nav-links a { color: var(--text); text-decoration: none; font-size: 0.7rem; letter-spacing: 3px; font-weight: bold; text-transform: uppercase; transition: 0.3s; }
+        .nav-links a:hover { color: var(--gold); }
+        .exit-btn { border: 1px solid var(--gold); padding: 5px 15px; background: none; color: var(--text); cursor: pointer; letter-spacing: 2px; font-size: 0.6rem; }
+
+        /* Leadership Grid Styling */
+        .director-container { max-width: 1200px; margin: 4rem auto; padding: 0 2rem; display: grid; grid-template-columns: repeat(auto-fit, minmax(350px, 1fr)); gap: 40px; }
+        .director-card { background: var(--card-bg); border: 1px solid rgba(114, 56, 61, 0.2); padding: 3rem 2rem; text-align: center; transition: 0.6s; overflow: hidden; }
+        .director-card:hover { border-color: var(--gold); transform: translateY(-10px); box-shadow: 0 10px 20px rgba(0,0,0,0.5); }
+
+        .director-photo-wrapper { width: 180px; height: 180px; border-radius: 50%; border: 1px solid var(--primary); margin: 0 auto 2rem; overflow: hidden; }
+        .director-photo { width: 100%; height: 100%; object-fit: cover; filter: grayscale(100%); transition: 0.6s; }
+        .director-card:hover .director-photo { filter: grayscale(0%); }
+
+        /* Premium Blur Effect for Statements */
+        .statement-wrapper { position: relative; max-height: 70px; overflow: hidden; transition: 0.8s; }
+        .director-card:hover .statement-wrapper { max-height: 500px; }
+        .statement-wrapper::after { content: ''; position: absolute; bottom: 0; left: 0; width: 100%; height: 40px; background: linear-gradient(transparent, var(--card-bg)); transition: 0.6s; }
+        .director-card:hover .statement-wrapper::after { opacity: 0; }
+    </style>
+</head>
+<body>
+    <nav>
+        <a href="{% url 'index' %}" class="nav-logo">PASEL // BASE COMMAND</a>
+        <div class="nav-links">
+            <a href="{% url 'index' %}">SYSTEM MAP</a>
+            <a href="{% url 'about' %}">MISSION</a>
+            <a href="{% url 'directors' %}" style="color: var(--gold);">LEADERSHIP</a>
+            {% if user.is_authenticated %}
+                <form action="{% url 'logout' %}" method="post" style="display: inline;">
+                    {% csrf_token %}
+                    <button type="submit" class="exit-btn">EXIT TERMINAL</button>
+                </form>
+            {% else %}
+                <a href="{% url 'login' %}" style="border: 1px solid var(--gold); padding: 5px 15px;">LOGIN</a>
+            {% endif %}
+        </div>
+    </nav>
+
+    <div class="director-container">
+        {% for director in directors %}
+        <div class="director-card">
+            <div class="director-photo-wrapper">
+                {% if director.photo %}
+                    <img src="{{ director.photo.url }}" class="director-photo" alt="{{ director.name }}">
+                {% endif %}
+            </div>
+            <h2 style="color: var(--text); letter-spacing: 2px; text-transform: uppercase;">{{ director.name }}</h2>
+            <span style="color: var(--gold); font-size: 0.7rem; letter-spacing: 3px; display: block; margin-bottom: 1.5rem; text-transform: uppercase;">{{ director.title }}</span>
+            <div class="statement-wrapper">
+                <p style="font-style: italic; line-height: 1.6;">"{{ director.statement }}"</p>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</body>
+</html>

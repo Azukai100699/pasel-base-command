@@ -1,0 +1,10 @@
+# Local Environment & Secrets
+venv/
+.env
+__pycache__/
+
+# Local Database
+db.sqlite3
+
+# Production Static Files
+staticfiles/
