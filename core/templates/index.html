@@ -15,7 +15,7 @@
             padding: 0;
         }
 
-        /* NAVIGATION BAR ARCHITECTURE */
+        /* MASTER NAVBAR ARCHITECTURE */
         .navbar {
             background-color: #000000 !important;
             border-bottom: 2px solid #2a0808; 
@@ -54,7 +54,7 @@
             border-color: #ffcc00;
         }
 
-        /* HERO AREA SYSTEM MATRIX */
+        /* HERO MATRIX */
         .hero-stage {
             position: relative;
             width: 100%;
@@ -62,7 +62,6 @@
             overflow: hidden;
             border-bottom: 2px solid #2a0808;
         }
-
         .hero-carousel {
             position: absolute;
             top: 0;
@@ -78,39 +77,39 @@
             height: 100%;
             object-fit: cover;
         }
-
         .hero-overlay {
             position: absolute;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            background: rgba(0, 0, 0, 0.50); 
+            background: rgba(0, 0, 0, 0.65); 
             z-index: 2;
             display: flex;
             justify-content: center;
             align-items: center;
         }
 
-        /* LOGO IMAGE LINK HOVER SPECIFICATION */
+        /* TRUE GOLD LOGO & HOME BUTTON CONFIGURATION */
         .logo-home-link {
+            z-index: 10;
             display: inline-block;
-            transition: transform 0.2s ease;
+            transition: transform 0.3s ease;
+            cursor: pointer;
         }
         .logo-home-link:hover {
-            transform: scale(1.02);
+            transform: scale(1.03);
         }
-
         .main-logo {
-            max-width: 375px; 
+            max-width: 420px; 
             width: 100%;
             height: auto;
-            filter: sepia(1) saturate(6) hue-rotate(12deg) brightness(0.95)
-                    drop-shadow(0 0 10px rgba(255, 204, 0, 0.5))
-                    drop-shadow(0 0 25px rgba(255, 204, 0, 0.15));
+            /* Precise Hex-to-Filter matrix: Converts white exactly to crisp PASEL #ffcc00 */
+            filter: brightness(0) saturate(100%) invert(84%) sepia(35%) saturate(1478%) hue-rotate(359deg) brightness(101%) contrast(106%)
+                    drop-shadow(0 0 10px rgba(255, 204, 0, 0.4));
         }
 
-        /* DATA SECTOR GRID STYLING */
+        /* DATA GRID ARCHITECTURE */
         .sector-title {
             font-family: monospace;
             font-size: 0.9rem;
@@ -121,13 +120,11 @@
             margin-bottom: 20px;
             font-weight: bold;
         }
-        
         .hub-link-wrapper {
             text-decoration: none !important;
             display: block;
             color: unset;
         }
-        
         .hub-card {
             background-color: #050505;
             border: 1px solid #111111;
@@ -136,7 +133,6 @@
             position: relative;
             transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
         }
-        
         .hub-card::after {
             content: '';
             position: absolute;
@@ -147,17 +143,14 @@
             background-color: #882222;
             transition: width 0.3s ease;
         }
-
         .hub-link-wrapper:hover .hub-card {
             border-color: #ffcc00;
             background-color: #0a0a0a;
-            cursor: pointer;
         }
         .hub-link-wrapper:hover .hub-card::after {
             width: 100%;
             background-color: #ffcc00;
         }
-
         .hub-id {
             color: #882222;
             font-family: monospace;
@@ -179,23 +172,23 @@
 
     <nav class="navbar navbar-expand-lg navbar-dark">
         <div class="container">
-            <a class="navbar-brand" href="/">PASEL // BASE COMMAND</a>
+            <a class="navbar-brand" href="{% url 'index' %}">PASEL // BASE COMMAND</a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
                 <span class="navbar-toggler-icon"></span>
             </button>
             <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
                 <ul class="navbar-nav align-items-center">
                     <li class="nav-item me-4">
-                        <a class="nav-link" href="#">System Map</a>
+                        <a class="nav-link" href="{% url 'index' %}">System Map</a>
                     </li>
                     <li class="nav-item me-4">
-                        <a class="nav-link" href="#">Mission</a>
+                        <a class="nav-link" href="{% url 'about' %}">Mission</a>
                     </li>
                     <li class="nav-item me-4">
-                        <a class="nav-link" href="#">Leadership</a>
+                        <a class="nav-link" href="{% url 'directors' %}">Leadership</a>
                     </li>
                     <li class="nav-item">
-                        <a class="btn btn-login px-4" href="/admin/">LOGIN</a>
+                        <a class="btn btn-login px-4" href="{% url 'login' %}">LOGIN</a>
                     </li>
                 </ul>
             </div>
@@ -206,135 +199,47 @@
         <div id="heroCarousel" class="carousel slide hero-carousel" data-bs-ride="carousel" data-bs-interval="4000">
             <div class="carousel-inner">
                 <div class="carousel-item active">
-                    <img src="{% static 'images/slide1.jpg' %}" alt="PASEL View 1">
+                    <img src="{% static 'images/slide1.jpg' %}" alt="PASEL Site View 1">
                 </div>
                 <div class="carousel-item">
-                    <img src="{% static 'images/slide2.jpg' %}" alt="PASEL View 2">
-                </div>
-                <div class="carousel-item " >
-                    <img src="{% static 'images/slide3.jpg' %}" alt="PASEL View 3">
+                    <img src="{% static 'images/slide2.jpg' %}" alt="PASEL Site View 2">
                 </div>
                 <div class="carousel-item">
-                    <img src="{% static 'images/slide4.jpg' %}" alt="PASEL View 4">
+                    <img src="{% static 'images/slide3.jpg' %}" alt="PASEL Site View 3">
+                </div>
+                <div class="carousel-item">
+                    <img src="{% static 'images/slide4.jpg' %}" alt="PASEL Site View 4">
                 </div>
             </div>
         </div>
         <div class="hero-overlay">
-            <a href="/" class="logo-home-link">
+            <a href="{% url 'index' %}" class="logo-home-link">
                 <img src="{% static 'images/logo.png' %}" alt="PASEL Gold Emblem" class="main-logo">
             </a>
         </div>
     </div>
 
     <div class="container my-4">
-        {% if spheres %}
-            {% for sphere in spheres %}
-                <div class="sector-title">{{ sphere.name|upper }} Sector</div>
-                <div class="row g-4 mb-5">
-                    {% for hub in sphere.hubs.all %}
-                        <div class="col-6 col-md-3">
-                            <a href="{% url 'hub_detail' hub.id %}" class="hub-link-wrapper">
-                                <div class="hub-card">
-                                    <div class="hub-id">Hub_ID: {{ hub.hub_id|default:"Lib-Core" }}</div>
-                                    <h3 class="hub-name">{{ hub.name|upper }}</h3>
-                                </div>
-                            </a>
-                        </div>
-                    {% endfor %}
-                </div>
-            {% endfor %}
-        {% else %}
-            <div class="sector-title">Northern Sphere Sector</div>
+        {% for sphere in spheres %}
+            <div class="sector-title">{{ sphere.name|upper }} Sector</div>
             <div class="row g-4 mb-5">
-                <div class="col-6 col-md-3">
-                    <a href="/admin/" class="hub-link-wrapper">
-                        <div class="hub-card"><div class="hub-id">Hub_ID: Lib-Bom</div><h3 class="hub-name">BOMI</h3></div>
-                    </a>
-                </div>
-                <div class="col-6 col-md-3">
-                    <a href="/admin/" class="hub-link-wrapper">
-                        <div class="hub-card"><div class="hub-id">Hub_ID: Lib-Bon</div><h3 class="hub-name">BONG</h3></div>
-                    </a>
-                </div>
-                <div class="col-6 col-md-3">
-                    <a href="/admin/" class="hub-link-wrapper">
-                        <div class="hub-card"><div class="hub-id">Hub_ID: Lib-Gba</div><h3 class="hub-name">GBARPOLU</h3></div>
-                    </a>
-                </div>
-                <div class="col-6 col-md-3">
-                    <a href="/admin/" class="hub-link-wrapper">
-                        <div class="hub-card"><div class="hub-id">Hub_ID: Lib-Lof</div><h3 class="hub-name">LOFA</h3></div>
-                    </a>
-                </div>
+                {% for hub in sphere.hubs.all %}
+                    <div class="col-6 col-md-3">
+                        <a href="{% url 'hub_detail' hub.id %}" class="hub-link-wrapper">
+                            <div class="hub-card">
+                                <div class="hub-id">Hub_ID: {{ hub.hub_id|default:"Lib-Core" }}</div>
+                                <h3 class="hub-name">{{ hub.name|upper }}</h3>
+                            </div>
+                        </a>
+                    </div>
+                {% endfor %}
             </div>
-
-            <div class="sector-title">Western & Central Sphere Sector</div>
-            <div class="row g-4 mb-5">
-                <div class="col-6 col-md-3">
-                    <a href="/admin/" class="hub-link-wrapper">
-                        <div class="hub-card"><div class="hub-id">Hub_ID: Lib-Cap</div><h3 class="hub-name">CAPE MOUNT</h3></div>
-                    </a>
-                </div>
-                <div class="col-6 col-md-3">
-                    <a href="/admin/" class="hub-link-wrapper">
-                        <div class="hub-card"><div class="hub-id">Hub_ID: Lib-Mar</div><h3 class="hub-name">MARGIBI</h3></div>
-                    </a>
-                </div>
-                <div class="col-6 col-md-3">
-                    <a href="/admin/" class="hub-link-wrapper">
-                        <div class="hub-card"><div class="hub-id">Hub_ID: Lib-Mon</div><h3 class="hub-name">MONTSERRADO</h3></div>
-                    </a>
-                </div>
-                <div class="col-6 col-md-3">
-                    <a href="/admin/" class="hub-link-wrapper">
-                        <div class="hub-card"><div class="hub-id">Hub_ID: Lib-Nim</div><h3 class="hub-name">NIMBA</h3></div>
-                    </a>
-                </div>
+        {% empty %}
+            <div class="text-center my-5 py-5" style="border: 1px dashed #2a0808; border-radius: 4px;">
+                <h4 style="color: #ffcc00; letter-spacing: 2px;">LIVE SYSTEM INITIALIZING</h4>
+                <p class="text-secondary mt-3">The Production Database is currently empty. Please log in with Director Credentials to configure the 4 Spheres and 15 Counties.</p>
             </div>
-
-            <div class="sector-title">Southern Sphere Sector</div>
-            <div class="row g-4 mb-5">
-                <div class="col-6 col-md-3">
-                    <a href="/admin/" class="hub-link-wrapper">
-                        <div class="hub-card"><div class="hub-id">Hub_ID: Lib-Bas</div><h3 class="hub-name">GRAND BASSA</h3></div>
-                    </a>
-                </div>
-                <div class="col-6 col-md-3">
-                    <a href="/admin/" class="hub-link-wrapper">
-                        <div class="hub-card"><div class="hub-id">Hub_ID: Lib-Riv</div><h3 class="hub-name">RIVERCESS</h3></div>
-                    </a>
-                </div>
-                <div class="col-6 col-md-3">
-                    <a href="/admin/" class="hub-link-wrapper">
-                        <div class="hub-card"><div class="hub-id">Hub_ID: Lib-Sin</div><h3 class="hub-name">SINOE</h3></div>
-                    </a>
-                </div>
-            </div>
-
-            <div class="sector-title">Eastern Sphere Sector</div>
-            <div class="row g-4 mb-5">
-                <div class="col-6 col-md-3">
-                    <a href="/admin/" class="hub-link-wrapper">
-                        <div class="hub-card"><div class="hub-id">Hub_ID: Lib-Gge</div><h3 class="hub-name">GRAND GEDEH</h3></div>
-                    </a>
-                </div>
-                <div class="col-6 col-md-3">
-                    <a href="/admin/" class="hub-link-wrapper">
-                        <div class="hub-card"><div class="hub-id">Hub_ID: Lib-Gkr</div><h3 class="hub-name">GRAND KRU</h3></div>
-                    </a>
-                </div>
-                <div class="col-6 col-md-3">
-                    <a href="/admin/" class="hub-link-wrapper">
-                        <div class="hub-card"><div class="hub-id">Hub_ID: Lib-May</div><h3 class="hub-name">MARYLAND</h3></div>
-                    </a>
-                </div>
-                <div class="col-6 col-md-3">
-                    <a href="/admin/" class="hub-link-wrapper">
-                        <div class="hub-card"><div class="hub-id">Hub_ID: Lib-Rge</div><h3 class="hub-name">RIVER GEE</h3></div>
-                    </a>
-                </div>
-            </div>
-        {% endif %}
+        {% endfor %}
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
