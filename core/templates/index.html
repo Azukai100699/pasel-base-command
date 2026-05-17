@@ -104,9 +104,9 @@
             max-width: 420px; 
             width: 100%;
             height: auto;
-            /* Precise Hex-to-Filter matrix: Converts white exactly to crisp PASEL #ffcc00 */
-            filter: brightness(0) saturate(100%) invert(84%) sepia(35%) saturate(1478%) hue-rotate(359deg) brightness(101%) contrast(106%)
-                    drop-shadow(0 0 10px rgba(255, 204, 0, 0.4));
+            /* FIXED: Safe, non-destructive gold tint that preserves inner lines and transparent gaps perfectly */
+            filter: sepia(100%) saturate(350%) hue-rotate(5deg) brightness(0.95)
+                    drop-shadow(0 0 15px rgba(255, 204, 0, 0.6));
         }
 
         /* DATA GRID ARCHITECTURE */
