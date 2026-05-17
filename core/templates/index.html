@@ -3,147 +3,124 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>PASEL | System Map</title>
-    <title>PASEL | System Map</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PASEL - Practical and Scientific Engineering - Liberia</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <style>
-        :root { --bg: #0a0908; --primary: #72383D; --gold: #D4AF37; --text: #EFE9E1; --subtext: #AC9C8D; }
-        body { background: var(--bg); color: var(--subtext); font-family: 'Inter', sans-serif; margin: 0; }
-        
-        /* Universal Nav Styling */
-        nav { 
-            background: rgba(0,0,0,0.95); padding: 1rem 3rem; border-bottom: 1px solid var(--primary); 
-            display: flex; justify-content: space-between; align-items: center; 
-            position: sticky; top: 0; z-index: 1000; backdrop-filter: blur(10px);
+        body {
+            background-color: #121212;
+            color: #ffffff;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         }
-        .nav-logo { color: var(--gold); font-size: 0.9rem; letter-spacing: 4px; border-right: 1px solid var(--primary); padding-right: 20px; text-decoration: none; font-weight: bold; }
-        .nav-links { display: flex; gap: 30px; align-items: center; }
-        .nav-links a { color: var(--text); text-decoration: none; font-size: 0.7rem; letter-spacing: 3px; font-weight: bold; text-transform: uppercase; transition: 0.3s; }
-        .nav-links a:hover { color: var(--gold); }
-        .exit-btn { border: 1px solid var(--gold); padding: 5px 15px; background: none; color: var(--text); cursor: pointer; letter-spacing: 2px; font-size: 0.6rem; }
-
-        /* Restored Premium Hero Section */
-        .hero { 
-            height: 60vh; 
-            position: relative; 
-            overflow: hidden;
-            background: #000; 
-            display: flex; 
-            justify-content: center; 
-            align-items: center; 
-            border-bottom: 2px solid var(--primary); 
+        .navbar {
+            background-color: #1a1a1a !important;
+            border-bottom: 1px solid #333;
         }
-
-        /* Clean, Invisible Clickable Wrapper */
-        .logo-wrapper {
-            z-index: 20;
-            position: relative;
-            display: flex; 
-            justify-content: center;
-            align-items: center;
-            text-decoration: none;
-            outline: none;
+        .navbar-brand {
+            font-weight: 700;
+            letter-spacing: 1px;
+            color: #ffffff !important;
         }
-
-        /* THE RESTORED PREMIUM GOLD ALCHEMY */
-        .premium-logo { 
-            max-width: 350px; 
-            transition: transform 0.4s ease-in-out;
-            mix-blend-mode: screen; 
-            filter: invert(1) sepia(1) saturate(5) hue-rotate(15deg) brightness(1.2) contrast(1.2);
+        .btn-login {
+            background-color: transparent;
+            color: #ffffff;
+            border: 1px solid #ffffff;
+            transition: all 0.3s ease;
         }
-        
-        .logo-wrapper:hover .premium-logo {
-            transform: scale(1.05); /* Smooth, premium zoom on hover */
+        .btn-login:hover {
+            background-color: #ffffff;
+            color: #121212;
         }
-
-        /* Restored Slideshow Background */
-        .slide {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
+        /* Ensures slideshow images scale properly and maintain a uniform height */
+        .carousel-item img {
+            height: 500px;
             object-fit: cover;
-            opacity: 0;
-            transition: opacity 1.5s ease-in-out;
-            z-index: 1;
+            width: 100%;
         }
-        .slide.active { opacity: 0.35; }
-
-        /* Tactical Grid */
-        .map-container { max-width: 1200px; margin: 4rem auto; padding: 0 2rem; }
-        .sphere-label { font-size: 0.7rem; letter-spacing: 5px; color: #444; border-bottom: 1px solid #222; margin: 40px 0 20px; text-transform: uppercase; }
-        .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap: 20px; }
-        
-        .node { 
-            background: rgba(20,18,17,0.9); border: 1px solid rgba(114, 56, 61, 0.3); padding: 1.5rem; 
-            text-decoration: none; transition: 0.4s; position: relative;
+        .carousel-caption {
+            background: rgba(0, 0, 0, 0.6);
+            border-radius: 10px;
+            padding: 20px;
         }
-        .node:hover { border-color: var(--gold); transform: translateY(-5px); box-shadow: 0 10px 20px rgba(0,0,0,0.5); }
-        .node-id { font-family: 'Courier New'; font-size: 0.6rem; color: var(--primary); }
-        .node-name { color: var(--text); font-size: 1.2rem; text-transform: uppercase; margin: 10px 0; letter-spacing: 2px; }
-        .node-status { color: var(--gold); font-size: 0.7rem; letter-spacing: 1px; }
-        
-        .progress-bar { width: 100%; height: 2px; background: #222; margin-top: 15px; }
-        .progress-fill { height: 100%; background: var(--gold); transition: 1s; }
     </style>
 </head>
 <body>
-    <nav>
-        <a href="{% url 'index' %}" class="nav-logo">PASEL // BASE COMMAND</a>
-        <div class="nav-links">
-            <a href="{% url 'index' %}" style="color: var(--gold);">SYSTEM MAP</a>
-            <a href="{% url 'about' %}">MISSION</a>
-            <a href="{% url 'directors' %}">LEADERSHIP</a>
-            {% if user.is_authenticated %}
-                <form action="{% url 'logout' %}" method="post" style="display: inline;">
-                    {% csrf_token %}
-                    <button type="submit" class="exit-btn">EXIT TERMINAL</button>
-                </form>
-            {% else %}
-                <a href="{% url 'login' %}" style="border: 1px solid var(--gold); padding: 5px 15px;">LOGIN</a>
-            {% endif %}
+
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <div class="container">
+            <a class="navbar-brand" href="#">PASEL</a>
+            <button class="navbar-dark navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
+                <ul class="navbar-nav align-items-center">
+                    <li class="nav-item me-3">
+                        <a class="nav-link active" href="#">Home</a>
+                    </li>
+                    <li class="nav-item me-3">
+                        <a class="nav-link" href="#">About</a>
+                    </li>
+                    <li class="nav-item me-3">
+                        <a class="nav-link" href="#">Projects</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="btn btn-login px-4" href="/admin/">LOGIN</a>
+                    </li>
+                </ul>
+            </div>
         </div>
     </nav>
 
-    <div class="hero">
-        {% for slide in slideshow_images %}
-            <img src="{{ slide.image.url }}" class="slide" alt="PASEL Field Operation">
-        {% endfor %}
+    <div id="heroCarousel" class="carousel slide container my-5" data-bs-ride="carousel">
+        <div class="carousel-indicators">
+            <button type="button" data-bs-target="#heroCarousel" data-bs-slide-to="0" class="active"></button>
+            <button type="button" data-bs-target="#heroCarousel" data-bs-slide-to="1"></button>
+            <button type="button" data-bs-target="#heroCarousel" data-bs-slide-to="2"></button>
+        </div>
         
-        <a href="{% url 'index' %}" class="logo-wrapper">
-            <img src="{% static 'images/logo.png' %}" alt="PASEL Base Command" class="premium-logo">
-        </a>
-    </div>
-
-    <div class="map-container">
-        {% for sphere in spheres %}
-            <div class="sphere-label">{{ sphere.name }} SECTOR</div>
-            <div class="grid">
-                {% for hub in sphere.countyhub_set.all %}
-                <a href="{% url 'hub_detail' hub.id %}" class="node">
-                    <div class="node-id">HUB_ID: LIB-{{ hub.county_name|slice:":3"|upper }}</div>
-                    <div class="node-name">{{ hub.county_name }}</div>
-                    <div class="node-status">{{ hub.get_status_display }}</div>
-                    <div class="progress-bar"><div class="progress-fill" style="width:{{ hub.progress_percentage }}%;"></div></div>
-                </a>
-                {% endfor %}
+        <div class="carousel-inner rounded-3 shadow-lg">
+            <div class="carousel-item active">
+                <img src="{% static 'images/slide1.jpg' %}" alt="PASEL Engineering Slide 1">
+                <div class="carousel-caption d-none d-md-block">
+                    <h5>Practical and Scientific Engineering</h5>
+                    <p>Building national development frameworks through sustainable engineering practices.</p>
+                </div>
             </div>
-        {% endfor %}
+
+            <div class="carousel-item">
+                <img src="{% static 'images/slide2.jpg' %}" alt="PASEL Engineering Slide 2">
+                <div class="carousel-caption d-none d-md-block">
+                    <h5>Innovative Infrastructure Solutions</h5>
+                    <p>Pioneering automated mechanical and structural project designs.</p>
+                </div>
+            </div>
+
+            <div class="carousel-item">
+                <img src="{% static 'images/slide3.jpg' %}" alt="PASEL Engineering Slide 3">
+                <div class="carousel-caption d-none d-md-block">
+                    <h5>Research & Strategy</h5>
+                    <p>Empowering theoretical and practical development programs.</p>
+                </div>
+            </div>
+        </div>
+
+        <button class="carousel-control-prev" type="button" data-bs-target="#heroCarousel" data-bs-slide="prev">
+            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Previous</span>
+        </button>
+        <button class="carousel-control-next" type="button" data-bs-target="#heroCarousel" data-bs-slide="next">
+            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Next</span>
+        </button>
     </div>
 
-    <script>
-        let currentSlide = 0;
-        const slides = document.querySelectorAll('.slide');
-        if (slides.length > 0) {
-            slides[0].classList.add('active'); 
-            setInterval(() => {
-                slides[currentSlide].classList.remove('active');
-                currentSlide = (currentSlide + 1) % slides.length;
-                slides[currentSlide].classList.add('active');
-            }, 5000); 
-        }
-    </script>
+    <div class="container my-5 text-center">
+        <h2 class="fw-bold mb-4">Welcome to PASEL Liberia</h2>
+        <p class="lead text-secondary max-width-600 mx-auto">
+            Advancing the frontier of industrial development, physical science optimization, and professional engineering assets.
+        </p>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
