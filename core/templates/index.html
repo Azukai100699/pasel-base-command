@@ -8,28 +8,32 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <style>
         body {
-            background-color: #0a0a0a;
+            background-color: #050505;
             color: #ffffff;
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 0;
         }
-        /* Navbar matching your original gold/dark scheme */
+
+        /* NAVBAR STYLING */
         .navbar {
-            background-color: #050505 !important;
-            border-bottom: 1px solid #1a1a1a;
+            background-color: rgba(5, 5, 5, 0.95) !important;
+            border-bottom: 1px solid #111;
             padding: 20px 0;
+            z-index: 10;
         }
         .navbar-brand {
             font-weight: 700;
             letter-spacing: 2px;
-            color: #ffcc00 !important; /* Gold header text */
-            font-size: 1.25rem;
+            color: #ffcc00 !important;
+            font-size: 1.2rem;
         }
         .nav-link {
-            color: #ffcc00 !important; /* Gold links */
+            color: #ffcc00 !important;
             font-weight: 600;
             letter-spacing: 1.5px;
             text-transform: uppercase;
-            font-size: 0.9rem;
+            font-size: 0.85rem;
         }
         .nav-link:hover {
             color: #ffffff !important;
@@ -46,32 +50,90 @@
             background-color: #ffcc00;
             color: #050505;
         }
-        /* Layout for your original central gold emblem */
-        .logo-container {
-            text-align: center;
-            padding: 60px 0 40px 0;
-        }
-        .main-logo {
-            max-width: 500px;
+
+        /* HERO HERO WRAPPER (Layers text OVER the slideshow) */
+        .hero-container {
+            position: relative;
             width: 100%;
-            height: auto;
+            height: 75vh; /* Adjust height to your liking */
+            overflow: hidden;
         }
-        /* Image presentation parameters */
-        .carousel-item img {
-            height: 550px;
+
+        /* THE SLIDESHOW (Layered underneath) */
+        .carousel {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 1;
+        }
+        .carousel-inner, .carousel-item, .carousel-item img {
+            width: 100%;
+            height: 100%;
             object-fit: cover;
+        }
+
+        /* DARK TINT OVERLAY (Ensures gold logo pops against bright slide images) */
+        .hero-tint {
+            position: absolute;
+            top: 0;
+            left: 0;
             width: 100%;
+            height: 100%;
+            background: rgba(5, 5, 5, 0.55);
+            z-index: 2;
         }
-        .carousel-caption {
-            background: rgba(0, 0, 0, 0.75);
-            border-radius: 10px;
-            padding: 25px;
-            border: 1px solid #222;
+
+        /* EMBLEM CONTENT OVERLAY */
+        .logo-overlay-content {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            z-index: 3;
+            text-align: center;
+            padding: 0 20px;
+            pointer-events: none; /* Allows clicking carousel controls through text layout */
         }
-        .carousel-caption h5 {
-            color: #ffcc00;
+
+        /* PREMIUM GOLD METALLIC & EDGE GLOW EFFECT */
+        .premium-gold-logo {
+            font-size: 5.5rem;
+            font-weight: 900;
+            letter-spacing: 8px;
+            text-transform: uppercase;
+            margin: 0;
+            line-height: 1;
+            
+            /* Metallic Gold Gradient */
+            background: linear-gradient(135deg, #fff3a1 0%, #f1b813 35%, #bf8c00 65%, #f1b813 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            
+            /* Flawless Edge Glow Layering */
+            filter: drop-shadow(0 0 12px rgba(241, 184, 19, 0.75)) 
+                    drop-shadow(0 0 30px rgba(241, 184, 19, 0.4));
+        }
+
+        .premium-subtitle {
+            font-size: 0.95rem;
             font-weight: 700;
-            letter-spacing: 1px;
+            letter-spacing: 5px;
+            text-transform: uppercase;
+            color: #ffcc00;
+            margin-top: 15px;
+            filter: drop-shadow(0 0 8px rgba(255, 204, 0, 0.5));
+        }
+
+        /* Carousel Navigation Depth Adjustments */
+        .carousel-control-prev, .carousel-control-next {
+            z-index: 4;
         }
     </style>
 </head>
@@ -102,60 +164,41 @@
         </div>
     </nav>
 
-    <div class="container logo-container">
-        <img src="{% static 'images/logo.png' %}" alt="PASEL Gold Emblem" class="main-logo">
-    </div>
-
-    <div id="heroCarousel" class="carousel slide container mb-5" data-bs-ride="carousel">
-        <div class="carousel-indicators">
-            <button type="button" data-bs-target="#heroCarousel" data-bs-slide-to="0" class="active"></button>
-            <button type="button" data-bs-target="#heroCarousel" data-bs-slide-to="1"></button>
-            <button type="button" data-bs-target="#heroCarousel" data-bs-slide-to="2"></button>
-            <button type="button" data-bs-target="#heroCarousel" data-bs-slide-to="3"></button>
-        </div>
+    <div class="hero-container">
         
-        <div class="carousel-inner rounded-3 shadow-lg border border-secondary">
-            <div class="carousel-item active">
-                <img src="{% static 'images/slide1.jpg' %}" alt="PASEL Slide 1">
-                <div class="carousel-caption d-none d-md-block">
-                    <h5>Practical and Scientific Engineering</h5>
-                    <p>Building national development frameworks through sustainable engineering practices.</p>
+        <div id="heroCarousel" class="carousel slide" data-bs-ride="carousel" data-bs-interval="4000">
+            <div class="carousel-inner">
+                <div class="carousel-item active">
+                    <img src="{% static 'images/slide1.jpg' %}" alt="PASEL Slide 1">
+                </div>
+                <div class="carousel-item">
+                    <img src="{% static 'images/slide2.jpg' %}" alt="PASEL Slide 2">
+                </div>
+                <div class="carousel-item">
+                    <img src="{% static 'images/slide3.jpg' %}" alt="PASEL Slide 3">
+                </div>
+                <div class="carousel-item">
+                    <img src="{% static 'images/slide4.jpg' %}" alt="PASEL Slide 4">
                 </div>
             </div>
 
-            <div class="carousel-item">
-                <img src="{% static 'images/slide2.jpg' %}" alt="PASEL Slide 2">
-                <div class="carousel-caption d-none d-md-block">
-                    <h5>Innovative Infrastructure Solutions</h5>
-                    <p>Pioneering automated mechanical and structural project designs.</p>
-                </div>
-            </div>
-
-            <div class="carousel-item">
-                <img src="{% static 'images/slide3.jpg' %}" alt="PASEL Slide 3">
-                <div class="carousel-caption d-none d-md-block">
-                    <h5>Research & Strategy</h5>
-                    <p>Empowering theoretical and practical development programs.</p>
-                </div>
-            </div>
-
-            <div class="carousel-item">
-                <img src="{% static 'images/slide4.jpg' %}" alt="PASEL Slide 4">
-                <div class="carousel-caption d-none d-md-block">
-                    <h5>Community & Advancement</h5>
-                    <p>Fostering collaboration, industrial optimization, and technical education.</p>
-                </div>
-            </div>
+            <button class="carousel-control-prev" type="button" data-bs-target="#heroCarousel" data-bs-slide="prev">
+                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                <span class="visually-hidden">Previous</span>
+            </button>
+            <button class="carousel-control-next" type="button" data-bs-target="#heroCarousel" data-bs-slide="next">
+                <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                <span class="visually-hidden">Next</span>
+            </button>
         </div>
 
-        <button class="carousel-control-prev" type="button" data-bs-target="#heroCarousel" data-bs-slide="prev">
-            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-            <span class="visually-hidden">Previous</span>
-        </button>
-        <button class="carousel-control-next" type="button" data-bs-target="#heroCarousel" data-bs-slide="next">
-            <span class="carousel-control-next-icon" aria-hidden="true"></span>
-            <span class="visually-hidden">Next</span>
-        </button>
+        <div class="hero-tint"></div>
+
+        <div class="logo-overlay-content">
+            <h1 class="premium-gold-logo">PASEL</h1>
+            <p class="premium-subtitle">Practical and Scientific Engineering - Liberia</p>
+        </div>
+
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
