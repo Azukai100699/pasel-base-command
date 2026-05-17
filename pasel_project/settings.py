@@ -22,8 +22,7 @@ SECRET_KEY = os.getenv('SECRET_KEY', 'fallback-insecure-key-for-dev-only')
 DEBUG = os.getenv('DEBUG', 'False') == 'True'
 
 # Reads hosts from .env split by commas, adapting smoothly between local and Railway URLs
-ALLOWED_HOSTS = [host.strip() for host in os.getenv('ALLOWED_HOSTS', '127.0.0.1,localhost').split(',') if host]
-
+ALLOWED_HOSTS = ['www.pasel-liberia.org', 'pasel-liberia.org', 'localhost', '127.0.0.1']
 # Explicitly allow Railway's private domain structure if deployed
 if os.getenv('RAILWAY_STATIC_URL'):
     ALLOWED_HOSTS.append('.railway.app')
