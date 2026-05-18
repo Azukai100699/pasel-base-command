@@ -51,7 +51,7 @@
         .btn-login:hover {
             background-color: #ffcc00;
             color: #000000;
-            border-color: #ffcc00;
+            border-color: #ffcc00 !important;
         }
 
         /* HERO MATRIX */
@@ -90,7 +90,7 @@
             align-items: center;
         }
 
-        /* TRUE GOLD LOGO & HOME BUTTON CONFIGURATION */
+        /* LOGO & HOME BUTTON CONFIGURATION */
         .logo-home-link {
             z-index: 10;
             display: inline-block;
@@ -104,9 +104,7 @@
             max-width: 420px; 
             width: 100%;
             height: auto;
-            /* FIXED: Safe, non-destructive gold tint that preserves inner lines and transparent gaps perfectly */
-            filter: sepia(100%) saturate(350%) hue-rotate(5deg) brightness(0.95)
-                    drop-shadow(0 0 15px rgba(255, 204, 0, 0.6));
+            /* Filter removed: Displays your raw, uploaded image perfectly */
         }
 
         /* DATA GRID ARCHITECTURE */
@@ -166,6 +164,16 @@
             margin: 0;
             color: #ffffff;
         }
+
+        /* DIRECTORS SECTION STYLING */
+        .directive-quote {
+            border-left: 3px solid #ffcc00;
+            padding-left: 20px;
+            font-style: italic;
+            color: #aaaaaa;
+            font-size: 1.1rem;
+            line-height: 1.6;
+        }
     </style>
 </head>
 <body>
@@ -178,17 +186,15 @@
             </button>
             <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
                 <ul class="navbar-nav align-items-center">
-                    <li class="nav-item me-4">
-                        <a class="nav-link" href="{% url 'index' %}">System Map</a>
-                    </li>
-                    <li class="nav-item me-4">
-                        <a class="nav-link" href="{% url 'about' %}">Mission</a>
-                    </li>
-                    <li class="nav-item me-4">
-                        <a class="nav-link" href="{% url 'directors' %}">Leadership</a>
-                    </li>
+                    <li class="nav-item me-4"><a class="nav-link" href="{% url 'index' %}">System Map</a></li>
+                    <li class="nav-item me-4"><a class="nav-link" href="{% url 'about' %}">Mission</a></li>
+                    <li class="nav-item me-4"><a class="nav-link" href="{% url 'directors' %}">Leadership</a></li>
                     <li class="nav-item">
-                        <a class="btn btn-login px-4" href="{% url 'login' %}">LOGIN</a>
+                        {% if user.is_authenticated %}
+                            <a class="btn btn-login px-4" style="border-color: #882222; color: #ffcc00;" href="{% url 'logout' %}">EXIT TERMINAL</a>
+                        {% else %}
+                            <a class="btn btn-login px-4" href="{% url 'login' %}">LOGIN</a>
+                        {% endif %}
                     </li>
                 </ul>
             </div>
@@ -198,18 +204,10 @@
     <div class="hero-stage">
         <div id="heroCarousel" class="carousel slide hero-carousel" data-bs-ride="carousel" data-bs-interval="4000">
             <div class="carousel-inner">
-                <div class="carousel-item active">
-                    <img src="{% static 'images/slide1.jpg' %}" alt="PASEL Site View 1">
-                </div>
-                <div class="carousel-item">
-                    <img src="{% static 'images/slide2.jpg' %}" alt="PASEL Site View 2">
-                </div>
-                <div class="carousel-item">
-                    <img src="{% static 'images/slide3.jpg' %}" alt="PASEL Site View 3">
-                </div>
-                <div class="carousel-item">
-                    <img src="{% static 'images/slide4.jpg' %}" alt="PASEL Site View 4">
-                </div>
+                <div class="carousel-item active"><img src="{% static 'images/slide1.jpg' %}" alt="PASEL Site View 1"></div>
+                <div class="carousel-item"><img src="{% static 'images/slide2.jpg' %}" alt="PASEL Site View 2"></div>
+                <div class="carousel-item"><img src="{% static 'images/slide3.jpg' %}" alt="PASEL Site View 3"></div>
+                <div class="carousel-item"><img src="{% static 'images/slide4.jpg' %}" alt="PASEL Site View 4"></div>
             </div>
         </div>
         <div class="hero-overlay">
@@ -219,29 +217,23 @@
         </div>
     </div>
 
-    <div class="container my-4">
-        {% for sphere in spheres %}
-            <div class="sector-title">{{ sphere.name|upper }} Sector</div>
-            <div class="row g-4 mb-5">
-                {% for hub in sphere.hubs.all %}
-                    <div class="col-6 col-md-3">
-                        <a href="{% url 'hub_detail' hub.id %}" class="hub-link-wrapper">
-                            <div class="hub-card">
-                                <div class="hub-id">Hub_ID: {{ hub.hub_id|default:"Lib-Core" }}</div>
-                                <h3 class="hub-name">{{ hub.name|upper }}</h3>
-                            </div>
-                        </a>
+    <div class="container mt-5 pt-3">
+        <div class="sector-title">Board of Directors</div>
+        <div class="row g-4 mb-5 pb-4" style="border-bottom: 1px solid #1a1a1a;">
+            {% if directors %}
+                {% for director in directors %}
+                    <div class="col-md-4">
+                        <div class="hub-card h-100" style="cursor: default;">
+                            <h3 class="hub-name mb-1" style="color: #ffcc00; font-size: 1.3rem;">{{ director.name }}</h3>
+                            <div class="hub-id mb-3">{{ director.title }}</div>
+                            <p style="font-size: 0.9rem; color: #cccccc; margin: 0;">"{{ director.statement }}"</p>
+                        </div>
                     </div>
                 {% endfor %}
-            </div>
-        {% empty %}
-            <div class="text-center my-5 py-5" style="border: 1px dashed #2a0808; border-radius: 4px;">
-                <h4 style="color: #ffcc00; letter-spacing: 2px;">LIVE SYSTEM INITIALIZING</h4>
-                <p class="text-secondary mt-3">The Production Database is currently empty. Please log in with Director Credentials to configure the 4 Spheres and 15 Counties.</p>
-            </div>
-        {% endfor %}
+            {% else %}
+                <div class="col-12 text-center">
+                    <p class="text-secondary" style="font-family: monospace;">AWAITING LEADERSHIP DATA FROM DATABASE</p>
+                </div>
+            {% endif %}
+        </div>
     </div>
-
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-</body>
-</html>
